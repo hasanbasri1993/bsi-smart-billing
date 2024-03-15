@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Hasanbasri1993\BsiSmartBilling\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class BsiSmartBillingCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'bsi-smart-billing';
 
     public $description = 'My command';
 
