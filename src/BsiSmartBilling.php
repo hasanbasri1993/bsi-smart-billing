@@ -38,5 +38,4 @@ class BsiSmartBilling
         return self::connectClient()->decrypt($data, config('bsi-smart-billing.client_id'),
             config('bsi-smart-billing.client_secret'));
     }
-
 }

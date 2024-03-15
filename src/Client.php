@@ -30,7 +30,7 @@ class Client
         return self::doubleEncrypt(strrev(time()).'.'.json_encode($json_data), $cid, $secret);
     }
 
-    static function decrypt($hashed_string, $cid, $secret)
+    public static function decrypt($hashed_string, $cid, $secret)
     {
         $parsed_string = self::doubleDecrypt($hashed_string, $cid, $secret);
         [$timestamp, $data] = array_pad(explode('.', $parsed_string, 2), 2, null);
