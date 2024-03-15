@@ -234,9 +234,6 @@ class Client
 
     public function inquiryBillingCheck(Parameter $param): string
     {
-        if (empty($param->getClientId())) {
-            return 'Client ID is required';
-        }
         if (empty($param->getTrxId())) {
             return 'Transaction ID is required';
         }
@@ -282,9 +279,6 @@ class Client
 
     public function updateBillingCheck(Parameter $param): string
     {
-        if (empty($param->getClientId())) {
-            return 'Client ID is required';
-        }
         if (empty($param->getTrxId())) {
             return 'Transaction ID is required';
         }
@@ -328,9 +322,6 @@ class Client
 
     public function deleteBillingCheck(Parameter $param): string
     {
-        if (empty($param->getClientId())) {
-            return 'Client ID is required';
-        }
         if (empty($param->getTrxId())) {
             return 'Transaction ID is required';
         }

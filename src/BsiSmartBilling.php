@@ -4,36 +4,32 @@ namespace Hasanbasri1993\BsiSmartBilling;
 
 class BsiSmartBilling
 {
-    public Configurator $bsiSmartBillingConfig;
 
-    public Client $bsiSmartBillingClient;
-
-    public function __construct()
+    public static function connectClient(): Client
     {
-        $this->bsiSmartBillingConfig =
+        $bsiSmartBillingConfig =
             Configurator::getDefaultConfiguration()
                 ->setUrl(config('bsi-smart-billing.url'))
                 ->setClientId(config('bsi-smart-billing.client_id'))
                 ->setClientSecret(config('bsi-smart-billing.client_secret'));
 
-        $this->bsiSmartBillingClient = new Client($this->bsiSmartBillingConfig);
+        return new Client($bsiSmartBillingConfig);
     }
 
-    public function detail($invoiceNumber): string
+    public static function detail($invoiceNumber)
     {
         $parameterData = Parameter::getDefaultConfiguration()
             ->setTrxId($invoiceNumber);
-
-        return $this->bsiSmartBillingClient->inquiryBilling($parameterData);
+        return self::connectClient()->inquiryBilling($parameterData);
     }
 
-    public function create(Parameter $parameter): string
+    public static function create(Parameter $parameter): string
     {
-        return $this->bsiSmartBillingClient->createBilling($parameter);
+        return self::connectClient()->createBilling($parameter);
     }
 
-    public function update(Parameter $parameter): string
+    public static function update(Parameter $parameter): string
     {
-        return $this->bsiSmartBillingClient->updateBilling($parameter);
+        return self::connectClient()->updateBilling($parameter);
     }
 }

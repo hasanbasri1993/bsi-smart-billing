@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class BsiSmartBilling extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return \Hasanbasri1993\BsiSmartBilling\BsiSmartBilling::class;
     }
