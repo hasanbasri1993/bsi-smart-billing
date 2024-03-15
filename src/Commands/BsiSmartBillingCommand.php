@@ -14,6 +14,7 @@ class BsiSmartBillingCommand extends Command
     public function handle(): int
     {
         $this->info(json_encode(BsiSmartBilling::detail($this->argument('trx-id')), JSON_PRETTY_PRINT));
+
         return self::SUCCESS;
     }
 }

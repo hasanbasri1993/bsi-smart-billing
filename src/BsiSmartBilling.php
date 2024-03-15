@@ -4,7 +4,6 @@ namespace Hasanbasri1993\BsiSmartBilling;
 
 class BsiSmartBilling
 {
-
     public static function connectClient(): Client
     {
         $bsiSmartBillingConfig =
@@ -20,6 +19,7 @@ class BsiSmartBilling
     {
         $parameterData = Parameter::getDefaultConfiguration()
             ->setTrxId($invoiceNumber);
+
         return self::connectClient()->inquiryBilling($parameterData);
     }
 
