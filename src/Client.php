@@ -30,7 +30,7 @@ class Client
         return self::doubleEncrypt(strrev(time()).'.'.json_encode($json_data), $cid, $secret);
     }
 
-    private static function decrypt($hashed_string, $cid, $secret)
+    static function decrypt($hashed_string, $cid, $secret)
     {
         $parsed_string = self::doubleDecrypt($hashed_string, $cid, $secret);
         [$timestamp, $data] = array_pad(explode('.', $parsed_string, 2), 2, null);
@@ -162,7 +162,7 @@ class Client
 
         $data_request = [
             'type' => 'createbilling',
-            'client_id' => $param->getClientId(),
+            'client_id' => $this->client_id,
             'trx_id' => $param->getTrxId(),
             'trx_amount' => $param->getTrxAmount(),
             'billing_type' => $param->getBillingType(),
@@ -185,9 +185,6 @@ class Client
 
     public function createBillingCheck(Parameter $param): string
     {
-        if (empty($param->getClientId())) {
-            return 'Client ID is required';
-        }
         if (empty($param->getTrxId())) {
             return 'Transaction ID is required';
         }
@@ -225,7 +222,7 @@ class Client
 
         $data_request = [
             'type' => 'inquirybilling',
-            'client_id' => $param->getClientId(),
+            'client_id' => $this->client_id,
             'trx_id' => $param->getTrxId(),
         ];
 
@@ -260,7 +257,7 @@ class Client
 
         $data_request = [
             'type' => 'updatebilling',
-            'client_id' => $param->getClientId(),
+            'client_id' => $this->client_id,
             'trx_id' => $param->getTrxId(),
             'trx_amount' => $param->getTrxAmount(),
             'customer_name' => $param->getCustomerName(),
@@ -313,7 +310,7 @@ class Client
 
         $data_request = [
             'type' => 'deletebilling',
-            'client_id' => $param->getClientId(),
+            'client_id' => $this->client_id,
             'trx_id' => $param->getTrxId(),
         ];
 

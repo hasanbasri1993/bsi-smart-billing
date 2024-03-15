@@ -23,13 +23,20 @@ class BsiSmartBilling
         return self::connectClient()->inquiryBilling($parameterData);
     }
 
-    public static function create(Parameter $parameter): string
+    public static function create(Parameter $parameter)
     {
         return self::connectClient()->createBilling($parameter);
     }
 
-    public static function update(Parameter $parameter): string
+    public static function update(Parameter $parameter)
     {
         return self::connectClient()->updateBilling($parameter);
     }
+
+    public static function decrypt($data)
+    {
+        return self::connectClient()->decrypt($data, config('bsi-smart-billing.client_id'),
+            config('bsi-smart-billing.client_secret'));
+    }
+
 }
