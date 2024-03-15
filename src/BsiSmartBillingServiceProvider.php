@@ -2,9 +2,9 @@
 
 namespace Hasanbasri1993\BsiSmartBilling;
 
+use Hasanbasri1993\BsiSmartBilling\Commands\BsiSmartBillingCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Hasanbasri1993\BsiSmartBilling\Commands\BsiSmartBillingCommand;
 
 class BsiSmartBillingServiceProvider extends PackageServiceProvider
 {

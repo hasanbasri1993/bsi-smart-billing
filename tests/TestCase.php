@@ -2,9 +2,9 @@
 
 namespace Hasanbasri1993\BsiSmartBilling\Tests;
 
+use Hasanbasri1993\BsiSmartBilling\BsiSmartBillingServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Hasanbasri1993\BsiSmartBilling\BsiSmartBillingServiceProvider;
 
 class TestCase extends Orchestra
 {

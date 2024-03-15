@@ -10,11 +10,14 @@ class Client
     const TIME_DIFF_LIMIT = 480;
 
     public string $client_id;
+
     public string $secret_key;
+
     private string $url;
+
     private GuzzleClient $client;
 
-    function __construct(Configurator $config)
+    public function __construct(Configurator $config)
     {
         $this->client = new GuzzleClient();
         $this->client_id = $config->getClientId();
@@ -24,16 +27,17 @@ class Client
 
     private static function encrypt(array $json_data, $cid, $secret): string
     {
-        return self::doubleEncrypt(strrev(time()) . '.' . json_encode($json_data), $cid, $secret);
+        return self::doubleEncrypt(strrev(time()).'.'.json_encode($json_data), $cid, $secret);
     }
 
     private static function decrypt($hashed_string, $cid, $secret)
     {
         $parsed_string = self::doubleDecrypt($hashed_string, $cid, $secret);
-        list($timestamp, $data) = array_pad(explode('.', $parsed_string, 2), 2, null);
+        [$timestamp, $data] = array_pad(explode('.', $parsed_string, 2), 2, null);
         if (self::tsDiff(strrev($timestamp)) === true) {
             return json_decode($data, true);
         }
+
         return null;
     }
 
@@ -46,6 +50,7 @@ class Client
     {
         $result = self::enc($string, $cid);
         $result = self::enc($result, $secret);
+
         return strtr(rtrim(base64_encode($result), '='), '+/', '-_');
     }
 
@@ -60,6 +65,7 @@ class Client
             $char = chr((ord($char) + ord($keychar)) % 128);
             $result .= $char;
         }
+
         return $result;
     }
 
@@ -67,6 +73,7 @@ class Client
     {
         $result = base64_decode(strtr(str_pad($string, ceil(strlen($string) / 4) * 4, '='), '-_', '+/'));
         $result = self::dec($result, $cid);
+
         return self::dec($result, $secret);
     }
 
@@ -81,6 +88,7 @@ class Client
             $char = chr(((ord($char) - ord($keychar)) + 256) % 128);
             $result .= $char;
         }
+
         return $result;
     }
 
@@ -93,7 +101,7 @@ class Client
         );
     }
 
-    function responeClient($data)
+    public function responeClient($data)
     {
         return self::decrypt($data, $this->client_id, $this->secret_key);
     }
@@ -104,12 +112,12 @@ class Client
             $hashed_string = $this->hashed_string($body);
             $response = $this->client->request('POST', $this->url, [
                 'headers' => [
-                    'Content-Type' => 'application/json'
+                    'Content-Type' => 'application/json',
                 ],
-                'json' => array(
+                'json' => [
                     'client_id' => $this->client_id,
                     'data' => $hashed_string,
-                )
+                ],
             ]);
             if ($response->getBody()) {
                 $response_json = json_decode($response->getBody(), true);
@@ -123,34 +131,36 @@ class Client
                         $data['data_extra'] = self::decrypt($response_json['data_extra'], $this->client_id,
                             $this->secret_key);
                     }
+
                     return $data;
                 }
             }
         } catch (GuzzleException $e) {
             return $e->getMessage();
         }
+
         return true;
     }
 
     /**
-     * @param Parameter $param
-     * Parameter Mandatory
-     *  client_id
-     *  trx_id
-     *  trx_amount
-     *  billing_type
-     *  customer_name
-     *  customer_email
-     *  customer_phone
+     * @param  Parameter  $param
+     *                            Parameter Mandatory
+     *                            client_id
+     *                            trx_id
+     *                            trx_amount
+     *                            billing_type
+     *                            customer_name
+     *                            customer_email
+     *                            customer_phone
      * @return mixed|string|null
      */
     public function createBilling(Parameter $param)
     {
-        if (!empty(self::createBillingCheck($param))) {
+        if (! empty(self::createBillingCheck($param))) {
             return self::createBillingCheck($param);
         }
 
-        $data_request = array(
+        $data_request = [
             'type' => 'createbilling',
             'client_id' => $param->getClientId(),
             'trx_id' => $param->getTrxId(),
@@ -158,21 +168,22 @@ class Client
             'billing_type' => $param->getBillingType(),
             'customer_name' => $param->getCustomerName(),
             'customer_email' => $param->getCustomerEmail(),
-            'customer_phone' => $param->getCustomerPhone()
-        );
-        if (!empty($param->getVirtualAccount())) {
+            'customer_phone' => $param->getCustomerPhone(),
+        ];
+        if (! empty($param->getVirtualAccount())) {
             $data_request['virtual_account'] = $param->getVirtualAccount();
         }
-        if (!empty($param->getDatetimeExpired())) {
+        if (! empty($param->getDatetimeExpired())) {
             $data_request['datetime_expired'] = $param->getDatetimeExpired();
         }
-        if (!empty($param->getDescription())) {
+        if (! empty($param->getDescription())) {
             $data_request['description'] = $param->getDescription();
         }
+
         return $this->requestClient($data_request);
     }
 
-    function createBillingCheck(Parameter $param): string
+    public function createBillingCheck(Parameter $param): string
     {
         if (empty($param->getClientId())) {
             return 'Client ID is required';
@@ -195,31 +206,33 @@ class Client
         if (empty($param->getCustomerPhone())) {
             return 'Customer Phone is required';
         }
-        return "";
+
+        return '';
     }
 
     /**
-     * @param Parameter $param
-     * Parameter Mandatory
-     *  client_id
-     *  trx_id
+     * @param  Parameter  $param
+     *                            Parameter Mandatory
+     *                            client_id
+     *                            trx_id
      * @return mixed|string|null
      */
     public function inquiryBilling(Parameter $param)
     {
-        if (!empty(self::inquiryBillingCheck($param))) {
+        if (! empty(self::inquiryBillingCheck($param))) {
             return self::inquiryBillingCheck($param);
         }
 
-        $data_request = array(
+        $data_request = [
             'type' => 'inquirybilling',
             'client_id' => $param->getClientId(),
-            'trx_id' => $param->getTrxId()
-        );
+            'trx_id' => $param->getTrxId(),
+        ];
+
         return $this->requestClient($data_request);
     }
 
-    function inquiryBillingCheck(Parameter $param): string
+    public function inquiryBillingCheck(Parameter $param): string
     {
         if (empty($param->getClientId())) {
             return 'Client ID is required';
@@ -227,45 +240,47 @@ class Client
         if (empty($param->getTrxId())) {
             return 'Transaction ID is required';
         }
-        return "";
+
+        return '';
     }
 
     /**
-     * @param Parameter $param
-     * Parameter Mandatory
-     *  client_id
-     *  trx_id
-     *  trx_amount
-     *  customer_name
-     *  customer_email
-     *  customer_phone
+     * @param  Parameter  $param
+     *                            Parameter Mandatory
+     *                            client_id
+     *                            trx_id
+     *                            trx_amount
+     *                            customer_name
+     *                            customer_email
+     *                            customer_phone
      * @return mixed|string|null
      */
     public function updateBilling(Parameter $param)
     {
-        if (!empty(self::updateBillingCheck($param))) {
+        if (! empty(self::updateBillingCheck($param))) {
             return self::updateBillingCheck($param);
         }
 
-        $data_request = array(
+        $data_request = [
             'type' => 'updatebilling',
             'client_id' => $param->getClientId(),
             'trx_id' => $param->getTrxId(),
             'trx_amount' => $param->getTrxAmount(),
             'customer_name' => $param->getCustomerName(),
             'customer_email' => $param->getCustomerEmail(),
-            'customer_phone' => $param->getCustomerPhone()
-        );
-        if (!empty($param->getDatetimeExpired())) {
+            'customer_phone' => $param->getCustomerPhone(),
+        ];
+        if (! empty($param->getDatetimeExpired())) {
             $data_request['datetime_expired'] = $param->getDatetimeExpired();
         }
-        if (!empty($param->getDescription())) {
+        if (! empty($param->getDescription())) {
             $data_request['description'] = $param->getDescription();
         }
+
         return $this->requestClient($data_request);
     }
 
-    function updateBillingCheck(Parameter $param): string
+    public function updateBillingCheck(Parameter $param): string
     {
         if (empty($param->getClientId())) {
             return 'Client ID is required';
@@ -285,31 +300,33 @@ class Client
         if (empty($param->getCustomerPhone())) {
             return 'Customer Phone is required';
         }
-        return "";
+
+        return '';
     }
 
     /**
-     * @param Parameter $param
-     * Parameter Mandatory
-     *  client_id
-     *  trx_id
+     * @param  Parameter  $param
+     *                            Parameter Mandatory
+     *                            client_id
+     *                            trx_id
      * @return mixed|string|null
      */
     public function deleteBilling(Parameter $param)
     {
-        if (!empty(self::deleteBillingCheck($param))) {
+        if (! empty(self::deleteBillingCheck($param))) {
             return self::deleteBillingCheck($param);
         }
 
-        $data_request = array(
+        $data_request = [
             'type' => 'deletebilling',
             'client_id' => $param->getClientId(),
-            'trx_id' => $param->getTrxId()
-        );
+            'trx_id' => $param->getTrxId(),
+        ];
+
         return $this->requestClient($data_request);
     }
 
-    function deleteBillingCheck(Parameter $param): string
+    public function deleteBillingCheck(Parameter $param): string
     {
         if (empty($param->getClientId())) {
             return 'Client ID is required';
@@ -317,7 +334,7 @@ class Client
         if (empty($param->getTrxId())) {
             return 'Transaction ID is required';
         }
-        return "";
-    }
 
+        return '';
+    }
 }

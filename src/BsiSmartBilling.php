@@ -5,6 +5,7 @@ namespace Hasanbasri1993\BsiSmartBilling;
 class BsiSmartBilling
 {
     public Configurator $bsiSmartBillingConfig;
+
     public Client $bsiSmartBillingClient;
 
     public function __construct()
@@ -22,6 +23,7 @@ class BsiSmartBilling
     {
         $parameterData = Parameter::getDefaultConfiguration()
             ->setTrxId($invoiceNumber);
+
         return $this->bsiSmartBillingClient->inquiryBilling($parameterData);
     }
 
@@ -34,6 +36,4 @@ class BsiSmartBilling
     {
         return $this->bsiSmartBillingClient->updateBilling($parameter);
     }
-
-
 }

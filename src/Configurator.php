@@ -6,12 +6,16 @@ use GuzzleHttp\Client as GuzzleClient;
 
 class Configurator
 {
-
     private static Configurator $defaultConfiguration;
+
     protected string $baseUrl = '';
+
     protected string $type = '';
+
     protected string $clientId = '';
+
     protected string $clientSecret = '';
+
     protected GuzzleClient $client;
 
     public function __construct()
@@ -21,17 +25,18 @@ class Configurator
 
     /**
      * Gets the default configuration instance
-     *
      */
     public static function getDefaultConfiguration(): Configurator
     {
         self::$defaultConfiguration = new Configurator();
+
         return self::$defaultConfiguration;
     }
 
     public function setUrl(string $url): Configurator
     {
         $this->baseUrl = $url;
+
         return $this;
     }
 
@@ -48,6 +53,7 @@ class Configurator
     public function setClientId(string $clientId): Configurator
     {
         $this->clientId = $clientId;
+
         return $this;
     }
 
@@ -59,6 +65,7 @@ class Configurator
     public function setClientSecret(string $clientSecret): Configurator
     {
         $this->clientSecret = $clientSecret;
+
         return $this;
     }
 }

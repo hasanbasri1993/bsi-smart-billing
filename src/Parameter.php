@@ -4,7 +4,6 @@ namespace Hasanbasri1993\BsiSmartBilling;
 
 class Parameter
 {
-
     private static Parameter $defaultConfiguration;
 
     /**
@@ -20,12 +19,15 @@ class Parameter
      * than the accepted value,
      * error code 004 will be
      * thrown.
-     * @var string
      */
     protected string $type = 'createbilling';
+
     protected string $client_id = '';
+
     protected string $trx_id = '';
+
     protected int $trx_amount = 0;
+
     /**
      *  -o
      *    -c
@@ -33,37 +35,51 @@ class Parameter
      *  -m
      *  -n
      *  -x
-     * @var string
      */
     protected string $billing_type = 'c';
+
     protected string $customer_name = '';
+
     protected string $customer_email = '';
+
     protected string $customer_phone = '';
+
     protected string $virtual_account = '';
+
     protected string $datetime_expired = '';
+
     protected string $description = '';
+
     protected string $info = '';
+
     protected string $datetime_created = '';
+
     protected string $datetime_last_updated = '';
+
     protected string $datetime_payment = '';
+
     protected string $payment_ntb = '';
+
     protected string $payment_amount = '';
+
     protected int $va_status;
+
     protected string $status;
 
     /**
      * Gets the default configuration instance
-     *
      */
     public static function getDefaultConfiguration(): Parameter
     {
         self::$defaultConfiguration = new Parameter();
+
         return self::$defaultConfiguration;
     }
 
     public function setClientId(string $client_id): Parameter
     {
         $this->client_id = $client_id;
+
         return $this;
     }
 
@@ -75,6 +91,7 @@ class Parameter
     public function setStatus(string $status): Parameter
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -86,6 +103,7 @@ class Parameter
     public function setTrxId(string $trx_id): Parameter
     {
         $this->trx_id = $trx_id;
+
         return $this;
     }
 
@@ -97,6 +115,7 @@ class Parameter
     public function setTrxAmount(int $trx_amount): Parameter
     {
         $this->trx_amount = $trx_amount;
+
         return $this;
     }
 
@@ -108,6 +127,7 @@ class Parameter
     public function setBillingType(string $billing_type): Parameter
     {
         $this->billing_type = $billing_type;
+
         return $this;
     }
 
@@ -119,6 +139,7 @@ class Parameter
     public function setCustomerEmail(string $customer_email): Parameter
     {
         $this->customer_email = $customer_email;
+
         return $this;
     }
 
@@ -130,6 +151,7 @@ class Parameter
     public function setCustomerName(string $customer_name): Parameter
     {
         $this->customer_name = $customer_name;
+
         return $this;
     }
 
@@ -141,18 +163,20 @@ class Parameter
     public function setCustomerPhone(string $customer_phone): Parameter
     {
         $this->customer_phone = $customer_phone;
+
         return $this;
     }
 
     public function getCustomerPhone(): string
     {
-        return str_starts_with($this->customer_phone, '62') ? substr_replace($this->customer_phone, "0", 0,
+        return str_starts_with($this->customer_phone, '62') ? substr_replace($this->customer_phone, '0', 0,
             2) : $this->customer_phone;
     }
 
     public function setVirtualAccount(string $virtual_account): Parameter
     {
         $this->virtual_account = $virtual_account;
+
         return $this;
     }
 
@@ -164,6 +188,7 @@ class Parameter
     public function setDescription(string $description): Parameter
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -175,6 +200,7 @@ class Parameter
     public function setInfo(string $info): Parameter
     {
         $this->info = $info;
+
         return $this;
     }
 
@@ -186,6 +212,7 @@ class Parameter
     public function setDatetimeExpired(string $datetime_expired): Parameter
     {
         $this->datetime_expired = $datetime_expired;
+
         return $this;
     }
 
@@ -197,6 +224,7 @@ class Parameter
     public function setDatetimeCreated(string $datetime_created): Parameter
     {
         $this->datetime_created = $datetime_created;
+
         return $this;
     }
 
@@ -208,6 +236,7 @@ class Parameter
     public function setDatetimeLastUpdated(string $datetime_last_updated): Parameter
     {
         $this->datetime_last_updated = $datetime_last_updated;
+
         return $this;
     }
 
@@ -219,6 +248,7 @@ class Parameter
     public function setDatetimePayment(string $datetime_payment): Parameter
     {
         $this->datetime_payment = $datetime_payment;
+
         return $this;
     }
 
@@ -230,6 +260,7 @@ class Parameter
     public function setPaymentNtb(string $payment_ntb): Parameter
     {
         $this->payment_ntb = $payment_ntb;
+
         return $this;
     }
 
@@ -241,6 +272,7 @@ class Parameter
     public function setPaymentAmount(int $payment_amount): Parameter
     {
         $this->payment_amount = $payment_amount;
+
         return $this;
     }
 
@@ -252,6 +284,7 @@ class Parameter
     public function setVaStatus(int $va_status): Parameter
     {
         $this->va_status = $va_status;
+
         return $this;
     }
 
@@ -259,5 +292,4 @@ class Parameter
     {
         return $this->va_status;
     }
-
 }
