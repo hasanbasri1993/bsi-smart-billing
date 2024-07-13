@@ -33,6 +33,11 @@ class BsiSmartBilling
         return self::connectClient()->updateBilling($parameter);
     }
 
+    public static function delete(Parameter $parameter)
+    {
+        return self::connectClient()->deleteBilling($parameter);
+    }
+
     public static function decrypt($data)
     {
         return self::connectClient()->decrypt($data, config('bsi-smart-billing.client_id'),
