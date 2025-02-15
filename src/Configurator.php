@@ -20,7 +20,7 @@ class Configurator
 
     public function __construct()
     {
-        $this->client = new GuzzleClient();
+        $this->client = new GuzzleClient;
     }
 
     /**
@@ -28,7 +28,7 @@ class Configurator
      */
     public static function getDefaultConfiguration(): Configurator
     {
-        self::$defaultConfiguration = new Configurator();
+        self::$defaultConfiguration = new Configurator;
 
         return self::$defaultConfiguration;
     }

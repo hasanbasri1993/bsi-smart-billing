@@ -71,7 +71,7 @@ class Parameter
      */
     public static function getDefaultConfiguration(): Parameter
     {
-        self::$defaultConfiguration = new Parameter();
+        self::$defaultConfiguration = new Parameter;
 
         return self::$defaultConfiguration;
     }

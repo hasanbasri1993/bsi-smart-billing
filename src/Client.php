@@ -19,7 +19,7 @@ class Client
 
     public function __construct(Configurator $config)
     {
-        $this->client = new GuzzleClient();
+        $this->client = new GuzzleClient;
         $this->client_id = $config->getClientId();
         $this->secret_key = $config->getClientSecret();
         $this->url = $config->getUrl();
