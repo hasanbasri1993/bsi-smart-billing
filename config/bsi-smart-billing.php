@@ -8,4 +8,5 @@ return [
     'web_url' => env('BPI_WEB_URL', 'https://sandbox.api.bpi.co.id/api/smartbilling/'),
     'username' => env('BPI_USERNAME', ''),
     'password' => env('BPI_PASSWORD', ''),
+    'institute' => env('BPI_INSTITUTE', ''),
 ];
