@@ -2,7 +2,9 @@
 
 namespace Hasanbasri1993\BsiSmartBilling;
 
-use Hasanbasri1993\BsiSmartBilling\Commands\BsiSmartBillingCommand;
+use Hasanbasri1993\BsiSmartBilling\Commands\BsiSmartBillingCheck;
+use Hasanbasri1993\BsiSmartBilling\Commands\BsiSmartBillingSwitchingPayment;
+use Hasanbasri1993\BsiSmartBilling\Commands\BsiSmartBillingSwitchingQuery;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -20,6 +22,10 @@ class BsiSmartBillingServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigration('create_bsi-smart-billing_table')
-            ->hasCommand(BsiSmartBillingCommand::class);
+            ->hasCommands([
+                BsiSmartBillingCheck::class,
+                BsiSmartBillingSwitchingQuery::class,
+                BsiSmartBillingSwitchingPayment::class,
+            ]);
     }
 }
