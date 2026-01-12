@@ -2,8 +2,8 @@
 
 namespace Hasanbasri1993\BsiSmartBilling\Service;
 
+use Hasanbasri1993\BsiSmartBilling\Models\InqueryTagihan;
 use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -81,5 +81,45 @@ class BPIWeb
         }
 
         return false;
+    }
+
+    public static function inqueryTagihan($id_tagihan): InqueryTagihan
+    {
+        $token = self::getToken();
+        try {
+            // //{"id_institusi":"a706e8d82c09a035fdefaf76ba7b86c1","nomor_pembayaran":"216112","kanal_pembayaran":"FLAGGING"}
+            $respond = Http::acceptJson()->withToken($token)->post(config('bsi-smart-billing.web_url').'tools/switching-inquiry', [
+                'id_institusi' => config('bsi-smart-billing.institute'),
+                'nomor_pembayaran' => $id_tagihan,
+                'kanal_pembayaran' => 'FLAGGING',
+            ]);
+        } catch (ConnectionException $e) {
+            Log::error('Error inqueryTagihan: '.$e->getMessage());
+
+            return new InqueryTagihan([]);
+        }
+
+        return new InqueryTagihan($respond->json() ?? []);
+    }
+
+    public static function switchingPayment($id_tagihan, $total_nominal, $catatan): InqueryTagihan
+    {
+        $token = self::getToken();
+        try {
+            // {"id_institusi":"a706e8d82c09a035fdefaf76ba7b86c1","nomor_pembayaran":"216112","total_nominal":326500,"catatan":"asd asd asd ","kanal_pembayaran":"FLAGGING"}
+            $respond = Http::acceptJson()->withToken($token)->post(config('bsi-smart-billing.web_url').'tools/switching-payment', [
+                'id_institusi' => config('bsi-smart-billing.institute'),
+                'nomor_pembayaran' => $id_tagihan,
+                'catatan' => $catatan,
+                'total_nominal' => $total_nominal,
+                'kanal_pembayaran' => 'FLAGGING',
+            ]);
+        } catch (ConnectionException $e) {
+            Log::error('Error switchingPayment: '.$e->getMessage());
+
+            return new InqueryTagihan([]);
+        }
+
+        return new InqueryTagihan($respond->json() ?? []);
     }
 }
