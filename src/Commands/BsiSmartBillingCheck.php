@@ -13,11 +13,12 @@ class BsiSmartBillingCheck extends Command
 
     public function handle(): int
     {
-        $trxId = $this->argument('trx_id') 
+        $trxId = $this->argument('trx_id')
             ?? $this->ask('Masukkan Transaction ID');
 
         if (empty($trxId)) {
             $this->error('Transaction ID is required.');
+
             return self::FAILURE;
         }
 

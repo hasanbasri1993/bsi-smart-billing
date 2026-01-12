@@ -13,11 +13,12 @@ class BsiSmartBillingSwitchingQuery extends Command
 
     public function handle(): int
     {
-        $nomorPembayaran = $this->argument('nomor_pembayaran') 
+        $nomorPembayaran = $this->argument('nomor_pembayaran')
             ?? $this->ask('Masukkan nomor pembayaran');
 
         if (empty($nomorPembayaran)) {
             $this->error('Nomor pembayaran is required.');
+
             return self::FAILURE;
         }
 

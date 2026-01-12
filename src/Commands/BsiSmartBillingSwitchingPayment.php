@@ -16,26 +16,28 @@ class BsiSmartBillingSwitchingPayment extends Command
 
     public function handle(): int
     {
-        $nomorPembayaran = $this->argument('nomor_pembayaran') 
+        $nomorPembayaran = $this->argument('nomor_pembayaran')
             ?? $this->ask('Masukkan nomor pembayaran');
 
         if (empty($nomorPembayaran)) {
             $this->error('Nomor pembayaran is required.');
+
             return self::FAILURE;
         }
 
-        $totalNominal = $this->argument('total_nominal') 
+        $totalNominal = $this->argument('total_nominal')
             ?? $this->ask('Masukkan total nominal');
 
-        if (empty($totalNominal) || !is_numeric($totalNominal)) {
+        if (empty($totalNominal) || ! is_numeric($totalNominal)) {
             $this->error('Total nominal is required and must be numeric.');
+
             return self::FAILURE;
         }
 
-        $catatan = $this->argument('catatan') 
+        $catatan = $this->argument('catatan')
             ?? $this->ask('Masukkan catatan (optional)', '');
 
-        $this->info("Processing payment...");
+        $this->info('Processing payment...');
         $this->table(
             ['Field', 'Value'],
             [
@@ -45,8 +47,9 @@ class BsiSmartBillingSwitchingPayment extends Command
             ]
         );
 
-        if (!$this->argument('nomor_pembayaran') && !$this->confirm('Proceed with payment?', true)) {
+        if (! $this->argument('nomor_pembayaran') && ! $this->confirm('Proceed with payment?', true)) {
             $this->warn('Payment cancelled.');
+
             return self::SUCCESS;
         }
 
